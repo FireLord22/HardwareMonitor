@@ -108,19 +108,27 @@
                 <StackPanel Margin="10">
 
                     <TextBlock FontWeight="Bold"
-                               Text="{Binding MemoryInfo.TotalMemoryBytes,
-                               Converter={StaticResource BytesToGbConverter},
-                               StringFormat=Всего: {0} ГБ}"/>
+                   Text="{Binding MemoryInfo.TotalMemoryBytes,
+                   Converter={StaticResource BytesToGbConverter},
+                   StringFormat=Всего: {0} ГБ}"/>
 
                     <TextBlock Text="{Binding MemoryInfo.AvailableMemoryBytes,
-                               Converter={StaticResource BytesToGbConverter},
-                               StringFormat=Доступно: {0} ГБ}"/>
+                   Converter={StaticResource BytesToGbConverter},
+                   StringFormat=Доступно: {0} ГБ}"/>
 
                     <TextBlock Text="{Binding MemoryInfo.Modules.Count,
-                               StringFormat=Плашек установлено: {0}}"/>
+                   StringFormat=Плашек установлено: {0}}"/>
 
-                    <DataGrid ItemsSource="{Binding MemoryInfo.Modules}"
-                              AutoGenerateColumns="True"/>
+                    <DataGrid ItemsSource="{Binding MemoryInfo.Modules}" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Производитель" Binding="{Binding Manufacturer}"/>
+                            <DataGridTextColumn Header="Объём (ГБ)"
+                    Binding="{Binding CapacityBytes, Converter={StaticResource BytesToGbConverter}}"/>
+                            <DataGridTextColumn Header="Скорость (MHz)" Binding="{Binding Speed}"/>
+                            <DataGridTextColumn Header="Тип" Binding="{Binding MemoryType}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
                 </StackPanel>
             </TabItem>
 
@@ -128,26 +136,34 @@
             <TabItem Header="Диски">
                 <StackPanel Margin="10">
 
-                    <TextBlock Text="Физические диски"
-                               FontWeight="Bold"/>
+                    <TextBlock Text="Физические диски" FontWeight="Bold"/>
 
-                    <DataGrid ItemsSource="{Binding DiskInfo.PhysicalDisks}"
-                              AutoGenerateColumns="True"/>
+                    <DataGrid ItemsSource="{Binding DiskInfo.PhysicalDisks}" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Название" Binding="{Binding Model}"/>
+                            <DataGridTextColumn Header="Производитель" Binding="{Binding Manufacturer}"/>
+                            <DataGridTextColumn Header="Объём (ГБ)"
+                    Binding="{Binding SizeBytes, Converter={StaticResource BytesToGbConverter}}"/>
+                            <DataGridTextColumn Header="Тип" Binding="{Binding MediaType}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
 
                     <TextBlock Text="Логические диски"
-                               FontWeight="Bold"
-                               Margin="0,10,0,0"/>
+                   FontWeight="Bold"
+                   Margin="0,10,0,0"/>
 
-                    <DataGrid ItemsSource="{Binding DiskInfo.LogicalDisks}"
-                              AutoGenerateColumns="True"/>
+                    <DataGrid ItemsSource="{Binding DiskInfo.LogicalDisks}" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Буква" Binding="{Binding Name}"/>
+                            <DataGridTextColumn Header="Файловая система" Binding="{Binding FileSystem}"/>
+                            <DataGridTextColumn Header="Всего (ГБ)"
+                    Binding="{Binding TotalSizeBytes, Converter={StaticResource BytesToGbConverter}}"/>
+                            <DataGridTextColumn Header="Свободно (ГБ)"
+                    Binding="{Binding FreeSpaceBytes, Converter={StaticResource BytesToGbConverter}}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
                 </StackPanel>
-            </TabItem>
-
-            <!-- NETWORK -->
-            <TabItem Header="Сеть">
-                <DataGrid ItemsSource="{Binding NetworkAdapters}"
-                          AutoGenerateColumns="True"
-                          Margin="10"/>
             </TabItem>
 
             <!-- SYSTEM -->

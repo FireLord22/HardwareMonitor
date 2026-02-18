@@ -3,6 +3,7 @@ using HardwareMonitor.Services;
 using HardwareMonitor.Utils;
 using Microsoft.Win32;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -93,22 +94,35 @@ namespace HardwareMonitor.ViewModels
 
         private void Export()
         {
-            var dialog = new SaveFileDialog();
-            dialog.Filter = "TXT|*.txt|CSV|*.csv|JSON|*.json";
-
-            if (dialog.ShowDialog() != true) return;
-
-            var data = new { CpuInfo, MemoryInfo, DiskInfo, Date = DateTime.Now };
-
-            if (dialog.FileName.EndsWith(".txt"))
-                _export.ExportToTxt(dialog.FileName, data);
-            else if (dialog.FileName.EndsWith(".csv"))
+            var dialog = new Microsoft.Win32.SaveFileDialog
             {
-                _exportService.ExportToTxt("report.txt", data);
-                _exportService.ExportToJson("report.json", data);
+                Title = "Экспорт данных",
+                Filter = "Text file (*.txt)|*.txt|JSON file (*.json)|*.json|CSV file (*.csv)|*.csv",
+                FileName = "hardware_info"
+            };
+
+            bool? result = dialog.ShowDialog();
+
+            if (result != true)
+                return; // пользователь нажал Отмена
+
+            try
+            {
+                if (dialog.FileName.EndsWith(".json"))
+                    _exportService.ExportToJson(dialog.FileName, this);
+                else if (dialog.FileName.EndsWith(".csv"))
+                    _exportService.ExportToCsv(dialog.FileName, this);
+                else
+                    _exportService.ExportToTxt(dialog.FileName, this);
+
+                System.Windows.MessageBox.Show("Экспорт выполнен успешно!",
+                    "Экспорт", System.Windows.MessageBoxButton.OK,
+                    System.Windows.MessageBoxImage.Information);
             }
-            else
-                _export.ExportToJson(dialog.FileName, data);
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show($"Ошибка экспорта:\n{ex.Message}");
+            }
         }
     }
 }
