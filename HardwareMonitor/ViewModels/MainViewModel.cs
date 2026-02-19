@@ -1,16 +1,12 @@
 ﻿using HardwareMonitor.Models;
 using HardwareMonitor.Services;
 using HardwareMonitor.Utils;
-using HardwareMonitor.ViewModels;
 using System.Windows;
-using Microsoft.Win32;
 using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
-using HardwareMonitor.Utils;
 
 
 namespace HardwareMonitor.ViewModels

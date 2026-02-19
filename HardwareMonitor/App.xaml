@@ -5,7 +5,6 @@
 
     <Application.Resources>
 
-        <!-- 🎨 Цвета -->
         <Color x:Key="BgColor">#1E1E1E</Color>
         <Color x:Key="CardColor">#2D2D30</Color>
         <Color x:Key="AccentColor">#3A96DD</Color>
@@ -18,13 +17,11 @@
         <SolidColorBrush x:Key="TextBrush" Color="{StaticResource TextColor}"/>
         <SolidColorBrush x:Key="GridBrush" Color="{StaticResource GridColor}"/>
 
-        <!-- 🪟 Окно -->
         <Style TargetType="Window">
             <Setter Property="Background" Value="{StaticResource BgBrush}"/>
             <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
         </Style>
 
-        <!-- 🔘 Кнопки -->
         <Style TargetType="Button">
             <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
             <Setter Property="Foreground" Value="White"/>
@@ -33,7 +30,6 @@
             <Setter Property="BorderThickness" Value="0"/>
         </Style>
 
-        <!-- 📦 Карточки -->
         <Style x:Key="CardStyle" TargetType="Border">
             <Setter Property="Background" Value="{StaticResource CardBrush}"/>
             <Setter Property="CornerRadius" Value="10"/>
@@ -41,7 +37,6 @@
             <Setter Property="Margin" Value="5"/>
         </Style>
 
-        <!-- 📊 DataGrid -->
         <Style TargetType="DataGrid">
             <Setter Property="Background" Value="{StaticResource CardBrush}"/>
             <Setter Property="Foreground" Value="White"/>
@@ -57,7 +52,6 @@
             <Setter Property="FontWeight" Value="Bold"/>
         </Style>
 
-        <!-- 📝 TextBlock -->
         <Style TargetType="TextBlock">
             <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
         </Style>

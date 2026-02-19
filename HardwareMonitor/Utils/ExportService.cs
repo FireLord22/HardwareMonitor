@@ -2,7 +2,6 @@
 using System.IO;
 using System.Text;
 using System.Text.Json;
-using System.Reflection;
 using HardwareMonitor.ViewModels;
 
 namespace HardwareMonitor.Utils

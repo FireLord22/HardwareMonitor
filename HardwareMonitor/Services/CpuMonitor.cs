@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using HardwareMonitor.Models;
-using System;
 using System.Management;
 
 namespace HardwareMonitor.Services
