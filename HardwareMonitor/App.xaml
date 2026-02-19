@@ -55,6 +55,8 @@
         <Style TargetType="TextBlock">
             <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
         </Style>
+        
+        
 
     </Application.Resources>
 </Application>

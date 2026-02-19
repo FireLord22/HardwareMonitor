@@ -22,12 +22,6 @@
             <Setter Property="GridLinesVisibility" Value="None"/>
         </Style>
 
-        <Style TargetType="TabItem">
-            <Setter Property="Background" Value="#2D2D30"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Padding" Value="10,5"/>
-        </Style>
-
         <Style TargetType="Button">
             <Setter Property="Background" Value="#3A7BD5"/>
             <Setter Property="Foreground" Value="White"/>
@@ -59,6 +53,48 @@
         </StackPanel>
 
         <TabControl Background="#2D2D30">
+
+            <TabControl.ItemContainerStyle>
+                <Style TargetType="TabItem">
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="Background" Value="#252526"/>
+                    <Setter Property="Padding" Value="12,6"/>
+                    <Setter Property="Margin" Value="0,0,2,0"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TabItem">
+                                <Border x:Name="Bd"
+                                        Background="{TemplateBinding Background}"
+                                        CornerRadius="6,6,0,0"
+                                        Padding="{TemplateBinding Padding}">
+                                    <ContentPresenter
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        ContentSource="Header"/>
+                                </Border>
+
+                                <ControlTemplate.Triggers>
+
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="Bd"
+                                                Property="Background"
+                                                Value="#2D2D30"/>
+                                    </Trigger>
+
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="Bd"
+                                                Property="Background"
+                                                Value="#3A3A3D"/>
+                                    </Trigger>
+
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TabControl.ItemContainerStyle>
 
             <TabItem Header="Процессор">
                 <StackPanel Margin="10">
@@ -99,22 +135,23 @@
                 <StackPanel Margin="10">
 
                     <TextBlock FontWeight="Bold"
-                   Text="{Binding MemoryInfo.TotalMemoryBytes,
-                   Converter={StaticResource BytesToGbConverter},
-                   StringFormat=Всего: {0} ГБ}"/>
+                               Text="{Binding MemoryInfo.TotalMemoryBytes,
+                               Converter={StaticResource BytesToGbConverter},
+                               StringFormat=Всего: {0} ГБ}"/>
 
                     <TextBlock Text="{Binding MemoryInfo.AvailableMemoryBytes,
-                   Converter={StaticResource BytesToGbConverter},
-                   StringFormat=Доступно: {0} ГБ}"/>
+                               Converter={StaticResource BytesToGbConverter},
+                               StringFormat=Доступно: {0} ГБ}"/>
 
                     <TextBlock Text="{Binding MemoryInfo.Modules.Count,
-                   StringFormat=Плашек установлено: {0}}"/>
+                               StringFormat=Плашек установлено: {0}}"/>
 
-                    <DataGrid ItemsSource="{Binding MemoryInfo.Modules}" AutoGenerateColumns="False">
+                    <DataGrid ItemsSource="{Binding MemoryInfo.Modules}"
+                              AutoGenerateColumns="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Производитель" Binding="{Binding Manufacturer}"/>
                             <DataGridTextColumn Header="Объём (ГБ)"
-                    Binding="{Binding CapacityBytes, Converter={StaticResource BytesToGbConverter}}"/>
+                                Binding="{Binding CapacityBytes, Converter={StaticResource BytesToGbConverter}}"/>
                             <DataGridTextColumn Header="Скорость (MHz)" Binding="{Binding Speed}"/>
                             <DataGridTextColumn Header="Тип" Binding="{Binding MemoryType}"/>
                         </DataGrid.Columns>
@@ -128,32 +165,46 @@
 
                     <TextBlock Text="Физические диски" FontWeight="Bold"/>
 
-                    <DataGrid ItemsSource="{Binding DiskInfo.PhysicalDisks}" AutoGenerateColumns="False">
+                    <DataGrid ItemsSource="{Binding DiskInfo.PhysicalDisks}"
+                              AutoGenerateColumns="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Название" Binding="{Binding Model}"/>
                             <DataGridTextColumn Header="Производитель" Binding="{Binding Manufacturer}"/>
                             <DataGridTextColumn Header="Объём (ГБ)"
-                    Binding="{Binding SizeBytes, Converter={StaticResource BytesToGbConverter}}"/>
+                                Binding="{Binding SizeBytes, Converter={StaticResource BytesToGbConverter}}"/>
                             <DataGridTextColumn Header="Тип" Binding="{Binding MediaType}"/>
                         </DataGrid.Columns>
                     </DataGrid>
 
                     <TextBlock Text="Логические диски"
-                   FontWeight="Bold"
-                   Margin="0,10,0,0"/>
+                               FontWeight="Bold"
+                               Margin="0,10,0,0"/>
 
-                    <DataGrid ItemsSource="{Binding DiskInfo.LogicalDisks}" AutoGenerateColumns="False">
+                    <DataGrid ItemsSource="{Binding DiskInfo.LogicalDisks}"
+                              AutoGenerateColumns="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Буква" Binding="{Binding Name}"/>
                             <DataGridTextColumn Header="Файловая система" Binding="{Binding FileSystem}"/>
                             <DataGridTextColumn Header="Всего (ГБ)"
-                    Binding="{Binding TotalSizeBytes, Converter={StaticResource BytesToGbConverter}}"/>
+                                Binding="{Binding TotalSizeBytes, Converter={StaticResource BytesToGbConverter}}"/>
                             <DataGridTextColumn Header="Свободно (ГБ)"
-                    Binding="{Binding FreeSpaceBytes, Converter={StaticResource BytesToGbConverter}}"/>
+                                Binding="{Binding FreeSpaceBytes, Converter={StaticResource BytesToGbConverter}}"/>
                         </DataGrid.Columns>
                     </DataGrid>
 
                 </StackPanel>
+            </TabItem>
+
+            <TabItem Header="Сеть">
+                <DataGrid ItemsSource="{Binding NetworkAdapters}"
+                          AutoGenerateColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Название" Binding="{Binding Name}" />
+                        <DataGridTextColumn Header="MAC-адрес" Binding="{Binding MacAddress}" />
+                        <DataGridTextColumn Header="Статус" Binding="{Binding Status}" />
+                        <DataGridTextColumn Header="Скорость (бит/с)" Binding="{Binding Speed}" />
+                    </DataGrid.Columns>
+                </DataGrid>
             </TabItem>
 
             <TabItem Header="Система">
