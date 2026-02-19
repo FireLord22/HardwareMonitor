@@ -1,6 +1,8 @@
 ﻿using HardwareMonitor.Models;
 using HardwareMonitor.Services;
 using HardwareMonitor.Utils;
+using HardwareMonitor.ViewModels;
+using System.Windows;
 using Microsoft.Win32;
 using System;
 using System.IO;
@@ -65,6 +67,7 @@ namespace HardwareMonitor.ViewModels
 
         public ICommand RefreshCommand { get; }
         public ICommand ExportCommand { get; }
+        public ICommand HelpCommand { get; }
 
         private DispatcherTimer _timer;
 
@@ -72,6 +75,7 @@ namespace HardwareMonitor.ViewModels
         {
             RefreshCommand = new RelayCommand(async () => await RefreshAsync());
             ExportCommand = new RelayCommand(Export);
+            HelpCommand = new RelayCommand(OpenHelp);
 
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromSeconds(3);
@@ -123,6 +127,13 @@ namespace HardwareMonitor.ViewModels
             {
                 System.Windows.MessageBox.Show($"Ошибка экспорта:\n{ex.Message}");
             }
+        }
+
+        private void OpenHelp()
+        {
+            var helpWindow = new HelpWindow();
+            helpWindow.Owner = Application.Current.MainWindow;
+            helpWindow.ShowDialog();
         }
     }
 }

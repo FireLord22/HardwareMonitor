@@ -1,0 +1,49 @@
+<Window x:Class="HardwareMonitor.ViewModels.HelpWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Справка"
+        Height="450"
+        Width="600"
+        Background="#1E1E1E"
+        Foreground="White">
+
+  <ScrollViewer Margin="15">
+    <StackPanel>
+
+      <TextBlock Text="Справка по программе Hardware Monitor"
+                 FontSize="18"
+                 FontWeight="Bold"
+                 Margin="0,0,0,10"/>
+
+      <TextBlock Text="Программа отображает информацию о вашем компьютере:"
+                 TextWrapping="Wrap"
+                 Margin="0,0,0,10"/>
+
+      <TextBlock Text="• Процессор — модель, ядра, загрузка"
+                 Margin="0,2"/>
+
+      <TextBlock Text="• Графика — видеокарта и объём памяти"
+                 Margin="0,2"/>
+
+      <TextBlock Text="• Память — установленные модули RAM"
+                 Margin="0,2"/>
+
+      <TextBlock Text="• Диски — физические и логические накопители"
+                 Margin="0,2"/>
+
+      <TextBlock Text="• Система — сведения об ОС и пользователе"
+                 Margin="0,2"/>
+
+      <TextBlock Text="Функции:"
+                 FontWeight="Bold"
+                 Margin="0,15,0,5"/>
+
+      <TextBlock Text="• Обновить — обновляет данные"
+                 Margin="0,2"/>
+
+      <TextBlock Text="• Экспорт — сохраняет отчёт (TXT, JSON, CSV)"
+                 Margin="0,2"/>
+
+    </StackPanel>
+  </ScrollViewer>
+</Window>

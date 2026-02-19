@@ -9,13 +9,10 @@
         Background="#1E1E1E"
         Foreground="White">
 
-    <!-- ===== RESOURCES ===== -->
     <Window.Resources>
 
-        <!-- Конвертер байтов → ГБ -->
         <utils:BytesToGbConverter x:Key="BytesToGbConverter"/>
 
-        <!-- Стиль для DataGrid -->
         <Style TargetType="DataGrid">
             <Setter Property="Background" Value="#2D2D30"/>
             <Setter Property="Foreground" Value="White"/>
@@ -25,14 +22,12 @@
             <Setter Property="GridLinesVisibility" Value="None"/>
         </Style>
 
-        <!-- Стиль для вкладок -->
         <Style TargetType="TabItem">
             <Setter Property="Background" Value="#2D2D30"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Padding" Value="10,5"/>
         </Style>
 
-        <!-- Стиль кнопок -->
         <Style TargetType="Button">
             <Setter Property="Background" Value="#3A7BD5"/>
             <Setter Property="Foreground" Value="White"/>
@@ -42,15 +37,12 @@
 
     </Window.Resources>
 
-    <!-- ===== ViewModel ===== -->
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
 
-    <!-- ===== UI ===== -->
     <DockPanel>
 
-        <!-- Верхняя панель -->
         <StackPanel DockPanel.Dock="Top"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"
@@ -61,12 +53,13 @@
 
             <Button Content="Экспорт"
                     Command="{Binding ExportCommand}"/>
+
+            <Button Content="Справка"
+                    Command="{Binding HelpCommand}"/>
         </StackPanel>
 
-        <!-- Вкладки -->
         <TabControl Background="#2D2D30">
 
-            <!-- CPU -->
             <TabItem Header="Процессор">
                 <StackPanel Margin="10">
                     <TextBlock Text="{Binding CpuInfo.Name}"
@@ -87,7 +80,6 @@
                 </StackPanel>
             </TabItem>
 
-            <!-- GPU -->
             <TabItem Header="Графика">
                 <StackPanel Margin="10">
                     <TextBlock Text="{Binding GpuInfo.Name}"
@@ -103,7 +95,6 @@
                 </StackPanel>
             </TabItem>
 
-            <!-- RAM -->
             <TabItem Header="Память">
                 <StackPanel Margin="10">
 
@@ -132,7 +123,6 @@
                 </StackPanel>
             </TabItem>
 
-            <!-- DISKS -->
             <TabItem Header="Диски">
                 <StackPanel Margin="10">
 
@@ -166,7 +156,6 @@
                 </StackPanel>
             </TabItem>
 
-            <!-- SYSTEM -->
             <TabItem Header="Система">
                 <StackPanel Margin="10">
                     <TextBlock Text="{Binding SystemInfo.OS}"/>
