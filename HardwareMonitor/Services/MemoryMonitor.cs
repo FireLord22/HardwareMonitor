@@ -40,6 +40,7 @@ namespace HardwareMonitor.Services
                 }
             }
 
+
             return memory;
         }
     }

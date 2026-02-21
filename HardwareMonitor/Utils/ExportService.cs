@@ -8,10 +8,19 @@ namespace HardwareMonitor.Utils
 {
     public class ExportService
     {
-        //TXT
+        private string GetExportTimestamp()
+        {
+            return DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        }
+
         public void ExportToTxt(string path, MainViewModel vm)
         {
             var sb = new StringBuilder();
+
+            sb.AppendLine("Hardware Monitor Export");
+            sb.AppendLine($"Export Date: {GetExportTimestamp()}");
+            sb.AppendLine(new string('-', 40));
+            sb.AppendLine();
 
             WriteSection(sb, "CPU", vm.CpuInfo);
             WriteSection(sb, "GPU", vm.GpuInfo);
@@ -26,11 +35,11 @@ namespace HardwareMonitor.Utils
             File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
         }
 
-        //JSON
         public void ExportToJson(string path, MainViewModel vm)
         {
             var data = new
             {
+                ExportDate = GetExportTimestamp(),
                 vm.CpuInfo,
                 vm.GpuInfo,
                 vm.MemoryInfo,
@@ -47,10 +56,11 @@ namespace HardwareMonitor.Utils
             File.WriteAllText(path, json, Encoding.UTF8);
         }
 
-        //CSV
         public void ExportToCsv(string path, MainViewModel vm)
         {
             var sb = new StringBuilder();
+
+            sb.AppendLine($"Export Date;{GetExportTimestamp()}");
             sb.AppendLine("Section;Property;Value");
 
             WriteCsvObject(sb, "CPU", vm.CpuInfo);
@@ -68,6 +78,7 @@ namespace HardwareMonitor.Utils
         private void WriteSection(StringBuilder sb, string title, object obj)
         {
             sb.AppendLine($"{title.ToUpper()}");
+
             if (obj == null)
             {
                 sb.AppendLine("Нет данных");

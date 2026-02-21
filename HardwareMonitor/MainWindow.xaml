@@ -153,7 +153,6 @@
                             <DataGridTextColumn Header="Объём (ГБ)"
                                 Binding="{Binding CapacityBytes, Converter={StaticResource BytesToGbConverter}}"/>
                             <DataGridTextColumn Header="Скорость (MHz)" Binding="{Binding Speed}"/>
-                            <DataGridTextColumn Header="Тип" Binding="{Binding MemoryType}"/>
                         </DataGrid.Columns>
                     </DataGrid>
 

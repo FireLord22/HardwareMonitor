@@ -109,6 +109,7 @@
     <Compile Include="Services\NetworkMonitor.cs" />
     <Compile Include="Services\SystemMonitor.cs" />
     <Compile Include="Utils\ExportService.cs" />
+    <Compile Include="Utils\PerformanceHelper.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\HelpWindow.xaml.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -125,7 +126,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ViewModels\HelpWindow.xaml">
+    <Page Include="Views\HelpWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

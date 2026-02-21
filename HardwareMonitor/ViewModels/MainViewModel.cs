@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
 
-
 namespace HardwareMonitor.ViewModels
 {
     public class MainViewModel : BaseViewModel
@@ -16,12 +15,14 @@ namespace HardwareMonitor.ViewModels
         private readonly CpuMonitor _cpu = new CpuMonitor();
         private readonly MemoryMonitor _memory = new MemoryMonitor();
         private readonly DiskMonitor _disk = new DiskMonitor();
-        private readonly ExportService _export = new ExportService();
         private readonly GpuMonitor _gpu = new GpuMonitor();
         private readonly NetworkMonitor _network = new NetworkMonitor();
         private readonly SystemMonitor _system = new SystemMonitor();
-
         private readonly ExportService _exportService = new ExportService();
+
+        private bool _isRefreshing;
+
+        #region Properties
 
         private GpuInfo _gpuInfo = new GpuInfo();
         public GpuInfo GpuInfo
@@ -30,7 +31,12 @@ namespace HardwareMonitor.ViewModels
             set => SetProperty(ref _gpuInfo, value);
         }
 
-        public List<NetworkAdapterInfo> NetworkAdapters { get; set; } = new List<NetworkAdapterInfo>();
+        private List<NetworkAdapterInfo> _networkAdapters = new List<NetworkAdapterInfo>();
+        public List<NetworkAdapterInfo> NetworkAdapters
+        {
+            get => _networkAdapters;
+            set => SetProperty(ref _networkAdapters, value);
+        }
 
         private SystemInfo _systemInfo = new SystemInfo();
         public SystemInfo SystemInfo
@@ -38,7 +44,6 @@ namespace HardwareMonitor.ViewModels
             get => _systemInfo;
             set => SetProperty(ref _systemInfo, value);
         }
-
 
         private CpuInfo _cpuInfo = new CpuInfo();
         public CpuInfo CpuInfo
@@ -61,11 +66,17 @@ namespace HardwareMonitor.ViewModels
             set => SetProperty(ref _diskInfo, value);
         }
 
+        #endregion
+
+        #region Commands
+
         public ICommand RefreshCommand { get; }
         public ICommand ExportCommand { get; }
         public ICommand HelpCommand { get; }
 
-        private DispatcherTimer _timer;
+        #endregion
+
+        private readonly DispatcherTimer _timer;
 
         public MainViewModel()
         {
@@ -73,22 +84,48 @@ namespace HardwareMonitor.ViewModels
             ExportCommand = new RelayCommand(Export);
             HelpCommand = new RelayCommand(OpenHelp);
 
-            _timer = new DispatcherTimer();
-            _timer.Interval = TimeSpan.FromSeconds(3);
+            _timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(3)
+            };
             _timer.Tick += async (s, e) => await RefreshAsync();
             _timer.Start();
+
+            /*try
+            {
+                HardwareMonitor.Utils.PerformanceHelper.RunAllTests();
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show($"Ошибка бенчмарка: {ex.Message}");
+            }*/
         }
 
         private async Task RefreshAsync()
         {
-            CpuInfo = await Task.Run(() => _cpu.GetCpuInfo());
-            MemoryInfo = await Task.Run(() => _memory.GetMemoryInfo());
-            DiskInfo = await Task.Run(() => _disk.GetDiskInfo());
-            GpuInfo = await Task.Run(() => _gpu.GetGpuInfo());
-            NetworkAdapters = await Task.Run(() => _network.GetAdapters());
-            SystemInfo = await Task.Run(() => _system.GetSystemInfo());
+            if (_isRefreshing) return;
+            _isRefreshing = true;
 
-            OnPropertyChanged(nameof(NetworkAdapters));
+            try
+            {
+                var cpuTask = Task.Run(() => _cpu.GetCpuInfo());
+                var memoryTask = Task.Run(() => _memory.GetMemoryInfo());
+                var diskTask = Task.Run(() => _disk.GetDiskInfo());
+                var gpuTask = Task.Run(() => _gpu.GetGpuInfo());
+                var networkTask = Task.Run(() => _network.GetAdapters());
+                var systemTask = Task.Run(() => _system.GetSystemInfo());
+
+                CpuInfo = await cpuTask;
+                MemoryInfo = await memoryTask;
+                DiskInfo = await diskTask;
+                GpuInfo = await gpuTask;
+                NetworkAdapters = await networkTask;
+                SystemInfo = await systemTask;
+            }
+            finally
+            {
+                _isRefreshing = false;
+            }
         }
 
 
@@ -101,10 +138,8 @@ namespace HardwareMonitor.ViewModels
                 FileName = "hardware_info"
             };
 
-            bool? result = dialog.ShowDialog();
-
-            if (result != true)
-                return; // пользователь нажал Отмена
+            if (dialog.ShowDialog() != true)
+                return;
 
             try
             {
@@ -115,21 +150,23 @@ namespace HardwareMonitor.ViewModels
                 else
                     _exportService.ExportToTxt(dialog.FileName, this);
 
-                System.Windows.MessageBox.Show("Экспорт выполнен успешно!",
-                    "Экспорт", System.Windows.MessageBoxButton.OK,
-                    System.Windows.MessageBoxImage.Information);
+                MessageBox.Show("Экспорт выполнен успешно!",
+                    "Экспорт", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show($"Ошибка экспорта:\n{ex.Message}");
+                MessageBox.Show($"Ошибка экспорта:\n{ex.Message}");
             }
         }
 
         private void OpenHelp()
         {
-            var helpWindow = new HelpWindow();
-            helpWindow.Owner = Application.Current.MainWindow;
+            var helpWindow = new HelpWindow
+            {
+                Owner = Application.Current.MainWindow
+            };
             helpWindow.ShowDialog();
         }
+
     }
 }

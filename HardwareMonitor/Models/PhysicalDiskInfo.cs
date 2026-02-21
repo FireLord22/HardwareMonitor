@@ -9,6 +9,7 @@ namespace HardwareMonitor.Models
     public class PhysicalDiskInfo
     {
         public string Model { get; set; }
+        public string Manufacturer { get; set; }
         public long SizeBytes { get; set; }
         public string MediaType { get; set; }
     }

@@ -18,6 +18,7 @@ namespace HardwareMonitor.Services
                     diskInfo.PhysicalDisks.Add(new PhysicalDiskInfo
                     {
                         Model = obj["Model"]?.ToString(),
+                        Manufacturer = obj["Model"]?.ToString(),
                         SizeBytes = Convert.ToInt64(obj["Size"] ?? 0),
                         MediaType = obj["MediaType"]?.ToString()
                     });
